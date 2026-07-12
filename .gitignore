@@ -65,3 +65,5 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 /FixarProyecto.ps1
+/.vscode/launch.json
+/.vscode/tasks.json
