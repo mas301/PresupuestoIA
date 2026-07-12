@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -16,8 +16,6 @@
     <DevExpressVersion Condition="'$(DevExpressVersion)' == ''">25.2</DevExpressVersion>
     <DevExpressAssembliesPath Condition="'$(DevExpressAssembliesPath)' == ''">$(ProgramFiles)\DevExpress $(DevExpressVersion)\Components\Bin\Framework\</DevExpressAssembliesPath>
     <DevExpressAssembliesPath Condition="!Exists('$(DevExpressAssembliesPath)')">$(ProgramFilesX86)\DevExpress $(DevExpressVersion)\Components\Bin\Framework\</DevExpressAssembliesPath>
-<<<<<<< HEAD
-=======
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,7 +31,6 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
->>>>>>> 61506f0 (Cambios locales después de desvinculación)
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,7 +73,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Reference Include="DevExpress.Data.v$(DevExpressVersion)">
       <HintPath>$(DevExpressAssembliesPath)DevExpress.Data.v$(DevExpressVersion).dll</HintPath>
       <Private>True</Private>
@@ -113,7 +109,6 @@
       <HintPath>$(DevExpressAssembliesPath)DevExpress.XtraTreeList.v$(DevExpressVersion).dll</HintPath>
       <Private>True</Private>
     </Reference>
-=======
     <Reference Include="DevExpress.Data.Desktop.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Drawing.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -123,7 +118,6 @@
     <Reference Include="DevExpress.XtraGrid.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v26.1, Version=26.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
->>>>>>> 61506f0 (Cambios locales después de desvinculación)
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -182,8 +176,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-<<<<<<< HEAD
-=======
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
@@ -196,6 +188,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
->>>>>>> 61506f0 (Cambios locales después de desvinculación)
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
