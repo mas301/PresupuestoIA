@@ -102,6 +102,16 @@ namespace PresupuestoIA
                 decimal cantidad = ToDecimal(node.GetValue(columnCantidad));
                 node.SetValue(columnCantidadTotal, cantidad * horasJornal * rendimiento / 100m);
             }
+            else if (IsCalculationType11(node) && !isPartida)
+            {
+                TreeListNode partidaNode = FindContainingPartida(node);
+                decimal rendimiento = partidaNode == null ? 0m : (GetPartidaRendimientoEquipos(partidaNode) ?? 0m);
+                node.SetValue(columnRendimiento, rendimiento);
+
+                decimal cantidad = ToDecimal(node.GetValue(columnCantidad));
+                // Cantidad Total = Cantidad x Rendimiento / 100
+                node.SetValue(columnCantidadTotal, cantidad * rendimiento / 100m);
+            }
             else
             {
                 node.SetValue(columnHorasJornal, null);
@@ -171,14 +181,14 @@ namespace PresupuestoIA
                     partidasTotalInSubtree += totalValue;
                 }
             }
-            else if (hasPartidaAncestor || (IsCalculationType5(node) && !isPartida))
+            else if (hasPartidaAncestor || (IsCalculationType5(node) && !isPartida) || (IsCalculationType11(node) && !isPartida))
             {
                 decimal quantity = ToDecimal(node.GetValue(columnCantidadTotal));
                 decimal unitValue = ToDecimal(node.GetValue(columnValorUnitario));
                 node.SetValue(columnValorTotal, CalculateTotalValue(node, quantity, unitValue));
             }
 
-            if (!hasPartidaAncestor && !isPartida && !IsCalculationType5(node))
+            if (!hasPartidaAncestor && !isPartida && !IsCalculationType5(node) && !IsCalculationType11(node))
                 node.SetValue(columnValorTotal, partidasTotalInSubtree);
 
             if (resourceTypePolicy.IsSubpresupuesto(node))

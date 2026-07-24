@@ -19,6 +19,7 @@ namespace PresupuestoIA
             bool isCalculationType8 = IsCalculationType8(e.Node);
             bool isCalculationType9 = IsCalculationType9(e.Node);
             bool isCalculationType10 = IsCalculationType10(e.Node);
+            bool isCalculationType11 = IsCalculationType11(e.Node);
             if (!allowsCalculationDetail
                 && !isCalculationType8
                 && !isCalculationType9
@@ -33,6 +34,7 @@ namespace PresupuestoIA
                 && !isCalculationType5
                 && !isCalculationType9
                 && !isCalculationType10
+                && !isCalculationType11
                 && (!allowsCalculationDetail || isPartida))
             {
                 e.DisplayText = string.Empty;
@@ -75,6 +77,7 @@ namespace PresupuestoIA
             bool isCalculationType8 = IsCalculationType8(e.Node);
             bool isCalculationType9 = IsCalculationType9(e.Node);
             bool isCalculationType10 = IsCalculationType10(e.Node);
+            bool isCalculationType11 = IsCalculationType11(e.Node);
             bool isSubpresupuesto = resourceTypePolicy.IsSubpresupuesto(e.Node);
             bool isReadOnlyCell = !e.Column.OptionsColumn.AllowEdit
                 || e.Column == columnValorTotal
@@ -91,7 +94,8 @@ namespace PresupuestoIA
                 || (e.Column == columnCantidadTotal && isCalculationType8)
                 || (e.Column == columnCantidadTotal && isCalculationType9)
                 || (e.Column == columnCantidadTotal && isCalculationType10)
-                || (e.Column == columnCantidad && !isCalculationType5 && !(isPartida && isCalculationType7) && !allowsCalculationDetail && !isCalculationType8 && !isCalculationType9 && !isCalculationType10)
+                || (e.Column == columnCantidadTotal && isCalculationType11)
+                || (e.Column == columnCantidad && !isCalculationType5 && !(isPartida && isCalculationType7) && !allowsCalculationDetail && !isCalculationType8 && !isCalculationType9 && !isCalculationType10 && !isCalculationType11)
                 || (e.Column == columnPesoUnitario && !isCalculationType5)
                 || (e.Column == columnDiasDuracion && !isPartida);
 
@@ -171,6 +175,7 @@ namespace PresupuestoIA
                 && !IsCalculationType8(treeList1.FocusedNode)
                 && !IsCalculationType9(treeList1.FocusedNode)
                 && !IsCalculationType10(treeList1.FocusedNode)
+                && !IsCalculationType11(treeList1.FocusedNode)
                 && column == columnCantidad)
                 e.Cancel = true;
 
@@ -181,6 +186,9 @@ namespace PresupuestoIA
                 e.Cancel = true;
 
             if (column == columnCantidadTotal && IsCalculationType10(treeList1.FocusedNode))
+                e.Cancel = true;
+
+            if (column == columnCantidadTotal && IsCalculationType11(treeList1.FocusedNode))
                 e.Cancel = true;
 
             if (column == columnDiasDuracion && !isPartida)
@@ -611,6 +619,15 @@ namespace PresupuestoIA
 
             int? calculationType = ToNullableInt(node.GetValue(columnTipoCalculo));
             return calculationType.HasValue && calculationType.Value == 10;
+        }
+
+        private bool IsCalculationType11(TreeListNode node)
+        {
+            if (node == null)
+                return false;
+
+            int? calculationType = ToNullableInt(node.GetValue(columnTipoCalculo));
+            return calculationType.HasValue && calculationType.Value == 11;
         }
 
         private int? ResolveResourceIdFromNodeValue(TreeListNode node, object resourceValue)
