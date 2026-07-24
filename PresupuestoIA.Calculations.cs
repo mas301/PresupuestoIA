@@ -105,8 +105,20 @@ namespace PresupuestoIA
             else if (IsCalculationType11(node) && !isPartida)
             {
                 TreeListNode partidaNode = FindContainingPartida(node);
-                decimal rendimiento = partidaNode == null ? 0m : (GetPartidaRendimientoEquipos(partidaNode) ?? 0m);
-                node.SetValue(columnRendimiento, rendimiento);
+                decimal rendimientoPartida = partidaNode == null ? 0m : (GetPartidaRendimientoEquipos(partidaNode) ?? 0m);
+                decimal rendimiento;
+
+                // Solo actualizar rendimiento si no fue modificado manualmente por el usuario
+                if (!nodesWithManualRendimiento.Contains(node))
+                {
+                    rendimiento = rendimientoPartida;
+                    node.SetValue(columnRendimiento, rendimiento);
+                }
+                else
+                {
+                    // Mantener el valor modificado por el usuario
+                    rendimiento = ToDecimal(node.GetValue(columnRendimiento));
+                }
 
                 decimal cantidad = ToDecimal(node.GetValue(columnCantidad));
                 // Cantidad Total = Cantidad x Rendimiento / 100

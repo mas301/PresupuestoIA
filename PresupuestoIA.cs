@@ -83,6 +83,7 @@ namespace PresupuestoIA
         private Dictionary<int, int?> resourceCalculationTypeIdsByResourceId;
         private Dictionary<int, RecursoDto> resourcesById;
         private Dictionary<int, string> unitDisplayNamesById;
+        private HashSet<TreeListNode> nodesWithManualRendimiento = new HashSet<TreeListNode>();
 
         [EditableSetting("General", "GrabacionAutomatica", "Intervalo en segundos entre grabaciones automaticas. Si es 0, se desactiva la grabacion automatica.")]
         public int GrabacionAutomatica

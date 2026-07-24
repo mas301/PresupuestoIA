@@ -82,7 +82,7 @@ namespace PresupuestoIA
             bool isReadOnlyCell = !e.Column.OptionsColumn.AllowEdit
                 || e.Column == columnValorTotal
                 || e.Column == columnHorasJornal
-                || e.Column == columnRendimiento
+                || (e.Column == columnRendimiento && !isCalculationType11)
                 || (e.Column == columnTipoCalculo && (isPartida || isSubpresupuesto))
                 || (e.Column == columnCantidadTotal && isSubpresupuesto)
                 || (e.Column == columnValorUnitario && isSubpresupuesto)
@@ -144,8 +144,11 @@ namespace PresupuestoIA
 
             if (column == columnRendimiento)
             {
-                e.Cancel = true;
-                return;
+                if (!IsCalculationType11(treeList1.FocusedNode))
+                {
+                    e.Cancel = true;
+                    return;
+                }
             }
 
             if (column == columnTipoCalculo)
@@ -216,6 +219,7 @@ namespace PresupuestoIA
                     e.Node.SetValue(columnRecurso, null);
                     e.Node.SetValue(columnUnidad, null);
                     e.Node.SetValue(columnTipoCalculo, null);
+                    nodesWithManualRendimiento.Remove(e.Node);
                 }
                 finally
                 {
@@ -271,6 +275,9 @@ namespace PresupuestoIA
                         e.Node.SetValue(columnTipoCalculo, null);
                     }
 
+                    // Si cambia el recurso, limpiar el flag de rendimiento manual
+                    nodesWithManualRendimiento.Remove(e.Node);
+
                     bool independiente = false;
                     if (resourceId.HasValue
                         && resourcesById != null
@@ -299,6 +306,14 @@ namespace PresupuestoIA
                 finally
                 {
                     suppressPersistence = false;
+                }
+            }
+
+            if (column == columnRendimiento)
+            {
+                if (IsCalculationType11(e.Node) && !resourceTypePolicy.IsPartida(e.Node))
+                {
+                    nodesWithManualRendimiento.Add(e.Node);
                 }
             }
 
