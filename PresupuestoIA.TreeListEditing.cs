@@ -15,6 +15,7 @@ namespace PresupuestoIA
 
             bool allowsCalculationDetail = IsCalculationType2Or3(e.Node);
             bool isPartida = resourceTypePolicy.IsPartida(e.Node);
+            bool isCalculationType5 = IsCalculationType5(e.Node);
             bool isCalculationType8 = IsCalculationType8(e.Node);
             bool isCalculationType9 = IsCalculationType9(e.Node);
             bool isCalculationType10 = IsCalculationType10(e.Node);
@@ -29,6 +30,7 @@ namespace PresupuestoIA
             }
 
             if (e.Column == columnRendimiento
+                && !isCalculationType5
                 && !isCalculationType9
                 && !isCalculationType10
                 && (!allowsCalculationDetail || isPartida))

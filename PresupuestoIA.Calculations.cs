@@ -108,14 +108,25 @@ namespace PresupuestoIA
 
                 if (!isPartida)
                 {
-                    node.SetValue(columnRendimiento, null);
+                    if (!IsCalculationType5(node))
+                        node.SetValue(columnRendimiento, null);
                 }
 
-                if (IsCalculationType5(node))
+                if (IsCalculationType5(node) && !isPartida)
                 {
+                    TreeListNode partidaNode = FindContainingPartida(node);
+                    decimal rendimiento = partidaNode == null ? 0m : (GetPartidaRendimientoEquipos(partidaNode) ?? 0m);
+                    node.SetValue(columnRendimiento, rendimiento);
+
                     decimal cantidad = ToDecimal(node.GetValue(columnCantidad));
                     decimal pesoUnitario = ToDecimal(node.GetValue(columnPesoUnitario));
-                    node.SetValue(columnCantidadTotal, cantidad * pesoUnitario);
+                    decimal cantidadTotal = cantidad * pesoUnitario * rendimiento / 100m;
+
+                    // Debug: mostrar valores
+                    System.Diagnostics.Debug.WriteLine($"Tipo5 - Cantidad: {cantidad}, PesoUnit: {pesoUnitario}, Rend: {rendimiento}, CanTotal: {cantidadTotal}");
+
+                    // Cantidad Total = Cantidad x Peso Unitario x %Rendimiento
+                    node.SetValue(columnCantidadTotal, cantidadTotal);
                 }
             }
 
@@ -160,14 +171,14 @@ namespace PresupuestoIA
                     partidasTotalInSubtree += totalValue;
                 }
             }
-            else if (hasPartidaAncestor)
+            else if (hasPartidaAncestor || (IsCalculationType5(node) && !isPartida))
             {
                 decimal quantity = ToDecimal(node.GetValue(columnCantidadTotal));
                 decimal unitValue = ToDecimal(node.GetValue(columnValorUnitario));
                 node.SetValue(columnValorTotal, CalculateTotalValue(node, quantity, unitValue));
             }
 
-            if (!hasPartidaAncestor && !isPartida)
+            if (!hasPartidaAncestor && !isPartida && !IsCalculationType5(node))
                 node.SetValue(columnValorTotal, partidasTotalInSubtree);
 
             if (resourceTypePolicy.IsSubpresupuesto(node))
